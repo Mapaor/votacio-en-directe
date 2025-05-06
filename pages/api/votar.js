@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Only POST allowed' });
   }
 
-  const { nom }  req.body;
+  const { nom } = req.body;
   if (!nom) {
     return res.status(400).json({ error: 'Nom del curt no rebut' });
   }
