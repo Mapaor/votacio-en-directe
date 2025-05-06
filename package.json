@@ -1,5 +1,5 @@
 {
-  "name": "vOtacio-en-directe",
+  "name": "votacio-en-directe",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,9 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "firebase-admin": "11.5.0",
-    "next": "13.4.12",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "firebase-admin": "^11.5.0",
+    "next": "^13.4.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
