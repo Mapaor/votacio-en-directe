@@ -4,14 +4,17 @@ export default async function handler(req, res) {
     }
     
     try {
-        // Suposem que el webhook envia la informació en JSON
-        const { keyData, altreInformacio } = req.body;
+        // Exemple: extreure la key d'un camp concret segons el seu label
+        const { data } = req.body;
+        let keyInteres = null;
+        if (data && data.fields && Array.isArray(data.fields)) {
+            keyInteres = data.fields.find(field => field.label === 'Votació final premi del públic')?.key;
+        }
         
-        // Aquí pots processar la informació rebuda
         console.log('Webhook rebut:', req.body);
+        console.log('Key d’interès:', keyInteres);
         
-        // Guarda o processa keyData segons el que necessitis
-        // Per exemple, pots actualitzar la base de dades o fer una altra operació
+        // Aquí pots guardar o processar keyInteres com necessitis
 
         return res.status(200).json({ success: true });
     } catch (err) {
