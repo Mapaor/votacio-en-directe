@@ -1,5 +1,5 @@
 // import { db } from '../../../firebase.js';
-const { db } = await import('../../../firebase.js');
+// const { db } = await import('../../../firebase.js');
 console.log('Prova sense firebase.js');
 
 if (typeof window !== 'undefined') {
