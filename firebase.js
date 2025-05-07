@@ -1,5 +1,4 @@
-console.log("Pfff");
-// import admin from 'firebase-admin';
+import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -12,4 +11,6 @@ if (!admin.apps.length) {
   });
 }
 
-export const db = admin.database();
+const db = admin.database();
+
+export { db };
