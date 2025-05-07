@@ -1,3 +1,5 @@
+import { db } from '../../firebase';
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Only POST allowed' });
@@ -13,12 +15,12 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Missing data property' });
         }
         
-        // Itera per cada field i filtra per la condició:
+        // Itera per cada field aplicant les condicions:
         // - field.value !== null
         // - field.key.length < 20
         const fieldVotat = data.fields.find(field => field.value !== null && field.key.length < 20);
         
-        // Defineix el mapping de labels a identificadors
+        // Defineix el mapping de labels a identificadors permesos a la base de dades
         const mapping = {
             '3 Fases Pilot': 'pilot',
             "L'altra banda del fil": 'fil',
@@ -33,10 +35,15 @@ export default async function handler(req, res) {
             const label = fieldVotat.label;
             const identificador = mapping[label];
             console.log('Field label:', label);
+            
             if (identificador) {
                 console.log('Identificador assignat:', identificador);
+                // Obté la referència a la base de dades per a aquest identificador i incrementa el valor
+                const ref = db.ref(identificador);
+                await ref.transaction((current) => (current ?? 0) + 1);
+                console.log(`S'ha incrementat el valor a la key ${identificador} en la BD.`);
             } else {
-                console.log('Label no mapejada als identificadors: ', label);
+                console.log('Label no mapejada als identificadors:', label);
             }
         } else {
             console.log('No s\'ha trobat cap field que compleixi la condició.');
