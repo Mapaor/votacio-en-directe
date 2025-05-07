@@ -43,8 +43,14 @@ export default function Home() {
             <div className="wrapper">
               <div className={styles.gridContainer}>
                 {votes.map((item) => {
-                  // Si el valor és igual al màxim, afegeix un estil de fons verd
-                  const cardStyle = item.value == maxVote ? { backgroundColor: "#9dfc03" } : {};
+                  const voteValue = Number(item.value);
+                  const voteDifference = maxVote - voteValue;
+                  let cardStyle = {};
+                  if (voteDifference === 0) {
+                      cardStyle = { backgroundColor: "#9dfc03" };
+                  } else if (voteDifference > 0 && voteDifference <= 2) {
+                      cardStyle = { backgroundColor: "#f4f731" };
+                  }
                   return (
                     <div key={item.key} className={styles.card} style={cardStyle}>
                         <h2>{invertedMapping[item.key] || item.key}</h2>
