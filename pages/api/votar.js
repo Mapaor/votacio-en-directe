@@ -1,6 +1,4 @@
-// import { db } from '../../../firebase.js';
-// const { db } = await import('../../../firebase.js');
-console.log('Prova sense firebase.js');
+import { db } from '../../../firebase.js';
 
 if (typeof window !== 'undefined') {
   throw new Error('firebase-admin només pot ser carregat al servidor');
