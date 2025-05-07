@@ -14,14 +14,16 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Missing data property' });
         }
         
-        // Mostrem tots els camps per verificar que estiguin poblats
-        console.log('Fields:', data.fields);
+        // Itera per cada field i filtra per la condició:
+        // - field.value !== null
+        // - field.key.length < 20
+        const fieldVotat = data.fields.find(field => field.value !== null && field.key.length < 20);
         
-        // Si vols extreure un camp en concret, assegura't que la label coincideix exactament
-        // Per exemple, si "formName" és "Votació final premi del públic", potser vols processar
-        // els camps sense filtrar per una label.
-        let keyInteres = data.fields.find(field => field.label === 'Votació final premi del públic')?.key || null;
-        console.log('Key d’interès:', keyInteres);
+        if (fieldVotat) {
+            console.log('Field label:', fieldVotat.label);
+        } else {
+            console.log('No s\'ha trobat cap field que compleixi la condició.');
+        }
         
         return res.status(200).json({ success: true });
     } catch (err) {
