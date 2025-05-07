@@ -1,0 +1,51 @@
+.wrapper {
+  text-align: center;
+}
+
+.gridContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;  /* Centra cada fila incompleta */
+  gap: 1rem;
+  padding: 1rem;
+  max-width: calc(300px * 4 + 1rem * 3); /* Màxim per 4 targetes (300px cadascuna) */
+  margin: 0 auto;
+}
+
+.card {
+  flex: 0 0 300px 0; /* Amplada fixa de targeta 300px */
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+@keyframes pulse {
+  0% { 
+    transform: scale(1); 
+    color: black;
+  }
+  50% { 
+    transform: scale(3); 
+    color: green;
+  }
+  100% { 
+    transform: scale(1); 
+    color: black;
+  }
+}
+
+.voteNumber {
+  display: inline-block;
+  animation: pulse 2s ease;
+}
