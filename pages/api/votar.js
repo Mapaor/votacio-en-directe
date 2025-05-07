@@ -1,6 +1,10 @@
 // import { db } from '../../../firebase.js';
 const { db } = await import('../../../firebase.js');
 
+if (typeof window !== 'undefined') {
+  throw new Error('firebase-admin només pot ser carregat al servidor');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Only POST allowed' });
