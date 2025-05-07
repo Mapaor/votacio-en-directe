@@ -1,0 +1,48 @@
+vars: {
+d2-config: {
+    layout-engine: elk
+    theme-id: 6
+}
+}
+
+web: Vercel Web App {
+  label.near: outside-top-center
+  webhook: WEB/api/webhook
+  index: WEB
+}
+
+github: GitHub Repo {
+  label.near: outside-top-center
+  client: firebaseClient.js
+  firebase: firebase.js
+}
+
+local: Repo Local (VSCode) {
+  label.near: outside-top-center
+  pack: package.json
+  pack-lock: package-lock.json
+  firebase
+}
+
+test: Testejar localment {
+  label.near: outside-top-center
+  passos: |md
+    ### Passos previs
+
+    0.Clonar el repositori (amb GitHub Desktop)
+
+    1. Cal tenir instal·lat NodeJS i npm
+
+    2. Instal·lar dependències
+
+      2.1 Des de la terminal anem al directori de la repo
+      
+      2.2 Fem `npm install`
+  |
+}
+tally: Tally Forms
+
+local -> test: npm run dev
+local -> github: GitHub Desktop\n.gitignore
+github -> web: Vercel configurada com a GitHub App pel repositori
+tally -> web.webhook: Tally Webhook endpoint

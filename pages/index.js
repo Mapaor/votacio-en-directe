@@ -57,6 +57,11 @@ export default function Home() {
                 })}
               </div>
             </div>
+
+            {/* QR overlay sempre visible amb animació constant */}
+            <div className={styles.qrOverlay}>
+              <img src="/qr.png" alt="QR" className={styles.qrImage} />
+            </div>
         </div>
     );
 }
