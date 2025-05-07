@@ -6,7 +6,6 @@ export default async function handler(req, res) {
     try {
         // Algunes plataformes envien el payload com a array
         const payload = Array.isArray(req.body) ? req.body[0] : req.body;
-        console.log('Webhook rebut:', payload);
         
         const { data } = payload;
         if (!data) {
@@ -19,8 +18,26 @@ export default async function handler(req, res) {
         // - field.key.length < 20
         const fieldVotat = data.fields.find(field => field.value !== null && field.key.length < 20);
         
+        // Defineix el mapping de labels a identificadors
+        const mapping = {
+            '3 Fases Pilot': 'pilot',
+            "L'altra banda del fil": 'fil',
+            "Aquella nit d'ahir": 'ahir',
+            'Pixapins': 'pixapins',
+            'La Patata': 'patata',
+            'Tangle Twist': 'twist',
+            'Remember': 'remember'
+        };
+        
         if (fieldVotat) {
-            console.log('Field label:', fieldVotat.label);
+            const label = fieldVotat.label;
+            const identificador = mapping[label];
+            console.log('Field label:', label);
+            if (identificador) {
+                console.log('Identificador assignat:', identificador);
+            } else {
+                console.log('Label no mapejada als identificadors: ', label);
+            }
         } else {
             console.log('No s\'ha trobat cap field que compleixi la condició.');
         }
