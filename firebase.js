@@ -1,5 +1,5 @@
 console.log("Pfff");
-import admin from 'firebase-admin';
+// import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
   admin.initializeApp({
