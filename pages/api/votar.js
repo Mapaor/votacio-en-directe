@@ -1,4 +1,5 @@
-import { db } from '../../../firebase.js';
+// import { db } from '../../../firebase.js';
+const { db } = await import('../../../firebase.js');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
