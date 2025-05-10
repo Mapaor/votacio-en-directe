@@ -1,48 +1,103 @@
 vars: {
-d2-config: {
+  d2-config: {
     layout-engine: elk
-    theme-id: 6
-}
+    theme-id: 0
+  }
 }
 
-web: Vercel Web App {
+direction: right
+
+vercel: Vercel Web App {
   label.near: outside-top-center
-  webhook: WEB/api/webhook
-  index: WEB
+  webhook: |md 
+  https://dominiWeb/api/webhook
+  |
+  index: |md 
+  https://dominiWeb
+  |
+  important: |md
+  ### Important
+  En el projecte de Vercel, a dins de 'Settings' > 'Environment Variables', posar-hi les variables d'entorn (tan públiques com privades)
+  |
 }
 
 github: GitHub Repo {
   label.near: outside-top-center
-  client: firebaseClient.js
+  pages: pages {
+    api: api {
+      webhook: webhook.js
+    }
+    index: index.js
+  }
+  public: public
+  styles: styles
+  gitignore: .gitignore
   firebase: firebase.js
+  client: firebaseClient.js
+  pack-lock: package-lock.json {style.opacity: 0.4}
+  pack: package.json
 }
 
 local: Repo Local (VSCode) {
   label.near: outside-top-center
+  node: node_modules {style.opacity: 0.4}
+  next: .next {style.opacity: 0.4}
+  pages: pages {
+    api: api {
+      webhook: webhook.js
+    }
+    index: index.js
+  }
+  public: public
+  styles: styles
+  env: .env.local
+  gitignore: .gitignore
+  firebase: firebase.js
+  client: firebaseClient.js
+  pack-lock: package-lock.json {style.opacity: 0.4}
   pack: package.json
-  pack-lock: package-lock.json
-  firebase
 }
 
 test: Testejar localment {
   label.near: outside-top-center
   passos: |md
     ### Passos previs
-
-    0.Clonar el repositori (amb GitHub Desktop)
-
-    1. Cal tenir instal·lat NodeJS i npm
-
+    0. Clonar el repositori (amb GitHub Desktop)
+    1. Assegurar-se de tenir instal·lat NodeJS i npm
     2. Instal·lar dependències
-
-      2.1 Des de la terminal anem al directori de la repo
-      
-      2.2 Fem `npm install`
+        1. Des de la terminal anar al directori de la repo
+        2. Fer `npm install` per instal·lar-les
+    3. Crear un fitxer .env.local i posar-hi les variables d'entorn
+    ### Executar l'app web en local
+    1. Obrir la terminal, anar al directori de la repo i fer `npm run dev`
+    2. Obrir 'http://localhost:3000' en un navegador 
   |
 }
+
+env: Variables d'entorn {
+  label.near: outside-top-center
+  priv: |md
+  ### Privades (Escriure en la Firebase Database)
+  - FIREBASE_PROJECT_ID
+  - FIREBASE_CLIENT_EMAIL
+  - FIREBASE_PRIVATE_KEY
+  |
+  pub: |md
+  ### Públiques (Llegir a temps real - Firebase SDK)
+  - NEXT_PUBLIC_FIREBASE_API_KEY
+  - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  - NEXT_PUBLIC_FIREBASE_DATABASE_URL
+  - NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  - NEXT_PUBLIC_FIREBASE_APP_ID
+  |
+}
+
 tally: Tally Forms
 
 local -> test: npm run dev
-local -> github: GitHub Desktop\n.gitignore
-github -> web: Vercel configurada com a GitHub App pel repositori
-tally -> web.webhook: Tally Webhook endpoint
+local -> github: GitHub Desktop (commit + push to origin)\n.gitignore
+github -> vercel: Vercel configurada com a GitHub App pel repositori
+tally -> vercel.webhook: Tally Webhook endpoint
+github.pages.index -> vercel.index: "return ( ...HTML... );"
