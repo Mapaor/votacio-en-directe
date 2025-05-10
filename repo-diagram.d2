@@ -1,23 +1,30 @@
 vars: {
   d2-config: {
-    layout-engine: elk
-    theme-id: 0
+    # layout-engine: elk
+    # theme-id: 0
   }
 }
 
-direction: right
+# direction: right
 
 vercel: Vercel Web App {
   label.near: outside-top-center
-  webhook: |md 
-  https://dominiWeb/api/webhook
+  grid-columns: 1
+  index: |md
+    https://dominiWeb
   |
-  index: |md 
-  https://dominiWeb
+  webhook: |md
+    https://dominiWeb/api/webhook
   |
-  important: |md
-  ### Important
-  En el projecte de Vercel, a dins de 'Settings' > 'Environment Variables', posar-hi les variables d'entorn (tan públiques com privades)
+  config: |md
+    ### Configuració
+    1. Overview > Add new project
+    2. Import Git Repository > Configure GitHub App
+    3. Seleccionar el repositori i donar-li accés
+    4. Import Git Repository > votacio-en-directe > Import
+    5. En la configuració del projecte posar-hi les variables d'entorn (tan públiques com privades)
+
+    Nota: les variables d'entorn sempre es poden modificar anant al projecte a 'Settings' > 'Environment Variables. 
   |
 }
 
@@ -77,27 +84,58 @@ test: Testejar localment {
 env: Variables d'entorn {
   label.near: outside-top-center
   priv: |md
-  ### Privades (Escriure en la Firebase Database)
-  - FIREBASE_PROJECT_ID
-  - FIREBASE_CLIENT_EMAIL
-  - FIREBASE_PRIVATE_KEY
+    ### Privades (Escriure en la Firebase Database)
+    - FIREBASE_PROJECT_ID
+    - FIREBASE_CLIENT_EMAIL
+    - FIREBASE_PRIVATE_KEY
   |
   pub: |md
-  ### Públiques (Llegir a temps real - Firebase SDK)
-  - NEXT_PUBLIC_FIREBASE_API_KEY
-  - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-  - NEXT_PUBLIC_FIREBASE_DATABASE_URL
-  - NEXT_PUBLIC_FIREBASE_PROJECT_ID
-  - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-  - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-  - NEXT_PUBLIC_FIREBASE_APP_ID
+    ### Públiques (Llegir a temps real - Firebase SDK)
+    - NEXT_PUBLIC_FIREBASE_API_KEY
+    - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    - NEXT_PUBLIC_FIREBASE_DATABASE_URL
+    - NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    - NEXT_PUBLIC_FIREBASE_APP_ID
   |
 }
 
-tally: Tally Forms
+database: Firebase Realtime Database {
+  passos: |md
+    ### Dades (JSON)
+      - opcio1: vots1
+      - opcio2: vots2
+      - ···
+    ### Configuració
+    1. Firebase new project
+    2. Compilation > Realtime Databse
+    3. Create Database
+        - Ubicació: Europe-West
+        - Mode: Testing
+    4. Afegir dades manualment (keys  + values) <br/>Si per exemple estiguéssim votant entre begudes podríem posar `fanta` amb `0` vots, `cocacola` amb `0` vots, etc. <br/>Les keys es correspondran a les opcions del formulari i triem com a keys paraules fàcils de recordar sense accents ni caràcters estranys.
+    5. Anar a Project Settings > Service accounts > Firebase admin SDK
+        1. Clicar 'Generate new private key'
+        2. Obrir el JSON descarregat per conéixer les variables d'entorn privades.
+    6. Anar a Project Settings > General > Your Apps i clicar un botó té una icona similar a '(</>)'. <br/>Això afegeix una aplicació web a la base de dades (juntament amb el seu SDK).
+    7. Posar un nom a la app i en el 2n pas copiar les variales d'entorn que apareixen dins de `const firebaseConfig = {}`. <br/> Les enganxem de moment en un editor de text qualsevol i cliquem el botó de 'Continue to console'.
+    8. Les vairables copiades es corresponen a les `NEXT_PUBLIC_*`, així que actualitzem el nostre `.env.local`. <br/>També les afegim manualment a Vercel (Project Settings > Environment variables)
+    9. Localment anem des de la terminal al repositori i fem `npm install firebase`. <br/>Això actualitzarà el 'package.json' i 'package-lock.json'. Fem commit i push to origin.
 
+    Ara Vercel ja sabrà com accedir a la base de dades per llegir-la en temps real (SDK Web App) i com modificar-la (té la clau privada).
+  |
+}
+
+tally: Tally Forms {
+  label.near: outside-top-center
+  submission: Nova submissió (resposta d'un usuari)
+}
+
+tally.submission -> vercel.webhook: Webhook endpoint \nAnar al formulari de Tally > Integrations > Webhook i afegir la URL
 local -> test: npm run dev
 local -> github: GitHub Desktop (commit + push to origin)\n.gitignore
 github -> vercel: Vercel configurada com a GitHub App pel repositori
-tally -> vercel.webhook: Tally Webhook endpoint
-github.pages.index -> vercel.index: "return ( ...HTML... );"
+env -> local.env: KEY=value
+env -> vercel
+vercel -> database: firebase.js
+database -> vercel: firebaseClient.js
