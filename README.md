@@ -3,10 +3,6 @@ Web que rep les respostes d'un Tally Forms en directe.
 
 El formulari és el següent: https://tally.so/r/w7jyXP.
 
-1. Bla bla
-   1. Bla bla
-
-Funcionament de l'aplicació i lògica de la repo:
-sadf
+Aquí un diagrama amb el funcionament de l'aplicació i lògica de la repo:
 
 ![diagrama](repo-diagram.svg)
