@@ -12,7 +12,12 @@ Per generar el QR s'ha utilitzat una web de codi obert molt xula: [https://mini-
 
 
 ### Configuració Tally
+Dins del formulari:
+
 ![regles tally](tally-rules.png)
+
+Integració webhook:
+
 ![webhook integration](tally-webhooks.png)
 
 ### Lògica firebase
@@ -32,7 +37,7 @@ Aquestes dades únicament les modifiquem (escriptura) nosaltres des del servidor
 
 Nota: `api/votar.js` és irrellevant, es podria eliminar i tot seguiria funcionant, l'he deixat únicament per si es volen fer proves.
 
-El servidor, al tenir configurat (explica't en el diagrama) admin SDK no té restriccions, pot llegir i escriure tot el que vulgui. El client (és a dir un usuari que utilitza el navegador i entra a la pàgina) no necessita escriure a la base de dades (no hi ha cap botó de votar). Aleshores únicament necessita permissos de lectura (per poder llegir la base de dades i mostrar els vots de manera maca a index.js), és per això que les regles de la base de dades són:
+El servidor, al tenir configurat admin SDK no té restriccions (explicació de com configurar-ho al diagrama que hi ha més amunt), això vol dir que pot llegir i escriure tot el que vulgui. El client (és a dir un usuari que utilitza el navegador i entra a la pàgina) no necessita escriure a la base de dades (no hi ha cap botó de votar). Aleshores únicament necessita permissos de lectura (per poder llegir la base de dades i mostrar els vots de manera maca a index.js), és per això que les regles de la base de dades són:
 ```
 {
   "rules": {
