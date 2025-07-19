@@ -22,16 +22,25 @@ export default function Home() {
     );
 
     useEffect(() => {
-        const dbRef = ref(db);
-        const unsubscribe = onValue(dbRef, (snapshot) => {
-            const data = snapshot.val();
-            const items = [];
-            for (const key in data) {
-                items.push({ key, value: data[key] });
+      const dbRef = ref(db); // accedeix a l'arrel
+      const unsubscribe = onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+        const items = [];
+
+        if (data && typeof data === 'object') {
+          // Només agafa les claus que existeixen al mapping
+          Object.keys(data).forEach((key) => {
+            if (invertedMapping[key]) {
+              items.push({ key, value: data[key] });
             }
-            setVotes(items);
-        });
-        return () => unsubscribe();
+          });
+        } else {
+          console.warn("⚠️ No s'han trobat dades vàlides.");
+        }
+
+        setVotes(items);
+      });
+      return () => unsubscribe();
     }, []);
 
     // Calcula el valor màxim de vots (convertint a number si cal)
