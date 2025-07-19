@@ -37,7 +37,7 @@ Aquestes dades únicament les modifiquem (escriptura) nosaltres des del servidor
 
 Nota: `api/votar.js` és irrellevant, es podria eliminar i tot seguiria funcionant, l'he deixat únicament per si es volen fer proves.
 
-El servidor, al tenir configurat admin SDK no té restriccions (explicació de com configurar-ho al diagrama que hi ha més amunt), això vol dir que pot llegir i escriure tot el que vulgui. El client (és a dir un usuari que utilitza el navegador i entra a la pàgina) no necessita escriure a la base de dades (no hi ha cap botó de votar). Aleshores únicament necessita permissos de lectura (per poder llegir la base de dades i mostrar els vots de manera maca a index.js), és per això que les regles de la base de dades són:
+El servidor, al tenir configurat admin SDK no té restriccions (explicació de com configurar-ho al diagrama que hi ha més amunt), això vol dir que pot llegir i escriure tot el que vulgui. El client (és a dir un usuari que utilitza el navegador i entra a la pàgina) no necessita escriure a la base de dades (no hi ha cap botó de votar). Aleshores únicament necessita permissos de lectura (per poder llegir la base de dades i mostrar els vots de manera maca a index.js), és per això que les regles de la base de dades (https://console.firebase.google.com/u/0/project/nomProjecte/database/nomBaseDeDades/rules) són:
 ```
 {
   "rules": {
@@ -47,11 +47,16 @@ El servidor, al tenir configurat admin SDK no té restriccions (explicació de c
 }
 ```
 
-El que s'encarrega de llegir la resposta del formulari de Tally i actualitzar la base de dades és `api/webhook.js`, i ho fa gràcies als permisos Admin SDK de `firebase.js`. El que s'encarrega de mostrar els vots de manera bonica és `index.js`, i ho fa gràcies als permissos de lectura client-side de `firabaseClient.js`.
+El que s'encarrega de llegir la resposta del formulari de Tally i actualitzar la base de dades és `api/webhook.js`, i ho fa gràcies als permisos (d'escriptura i lectura server-side) Admin SDK de `firebase.js`. El que s'encarrega de mostrar els vots de manera bonica és `index.js`, i ho fa gràcies als permissos de lectura client-side de `firabaseClient.js`.
 
 ### Variables d'entorn
-L'important és tenir en compte que en local s'han de tenir en un .env.local i a Vercel s'han de tenir a la configuració del projecte a 'Environment Variables'.
+L'important és tenir en compte que en local (repo instal·lada) s'ha de tenir en un fitxer .env.local i a Vercel s'ha de tenir les variables posades a la configuració a la secció 'Environment Variables'.
 
 Les privades (escriptura server-side via Admin SDK) les oobtenim configurant la firebase a "Project Settings > Service accounts > Firebase admin SDK" i exportant el JSON.
 
 Les públiques (lectura client-side) les obtenim quan afegim una Web App (icona </>) a la base de dades.
+
+### Publicació a Vercel
+Si en local amb `npm run dev` to va bé (es mostra tot bé a htttps://localhost:3000) abans de publicar cal comprovar que en mode producció la web també funciona. Això vol dir fer `npm run build` i quan acaba de compilar totes les pàgines fer `npm start`. El més probable és que el build doni errors si la configuració de variables d'entorn està mal feta. En el moment que el build ja no dongui errors, l'app ja estarà preparada per producció i es podrà publicar a Vercel.
+
+La manera més senzilla és utilitzar GitHub desktop per anar publicant a GitHub les modificacions fetes a la app en local. Aleshores des de la web de GitHub anar a Settings > Apps > Vercel > Configure > [Afegir el repositori]. I després des del Vercel dashboard "New Project" i importar el repositori. O posar les variables d'entorn en el procés o simplement fer deploy (el build fallarà) i després a Vercel > Project > Settings > Environment variables i afegir totes les del `.env.local` tal qual estan (també es pot posar el fitxer directament).
